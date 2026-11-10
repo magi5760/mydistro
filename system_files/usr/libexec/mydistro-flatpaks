@@ -1,0 +1,11 @@
+#!/bin/bash
+# First-boot: install the default apps from Flathub. Retries each boot until done.
+set -uo pipefail
+DONE=/var/lib/mydistro/flatpaks.done
+LIST=/usr/share/mydistro/flatpaks.txt
+mkdir -p /var/lib/mydistro
+[[ -f $DONE ]] && exit 0
+getent hosts dl.flathub.org >/dev/null || { echo "No network; retry next boot."; exit 0; }
+flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+mapfile -t APPS < <(grep -vE '^\s*(#|$)' "$LIST")
+flatpak install --system --noninteractive --or-update flathub "${APPS[@]}" && touch "$DONE"

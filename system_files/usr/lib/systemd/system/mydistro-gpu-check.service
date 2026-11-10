@@ -1,0 +1,9 @@
+[Unit]
+Description=MyDistro: check GPU matches the installed edition
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/mydistro-gpu-check
+
+[Install]
+WantedBy=multi-user.target

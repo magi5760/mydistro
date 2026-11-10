@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=MyDistro GPU notice
+Exec=/usr/libexec/mydistro-gpu-notify
+NoDisplay=true
+X-KDE-autostart-phase=2

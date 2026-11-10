@@ -1,0 +1,18 @@
+#!/bin/bash
+# Boot-time check: does this machine's GPU match the image it's running?
+# On an image-based system you don't install drivers; you switch to the image
+# that already has them. This notices a mismatch and tells the user.
+set -uo pipefail
+source /usr/share/mydistro/image.env
+
+lspci -nn | grep -E '\[030[02]\]' | grep -qi '\[10de:' && GPU_NVIDIA=1 || GPU_NVIDIA=0
+
+if [[ $GPU_NVIDIA -eq 1 && $HAS_NVIDIA -eq 0 ]]; then
+  MSG="NVIDIA graphics detected. Run 'mydistro-switch nvidia' in a terminal to switch to the NVIDIA edition (one reboot)."
+elif [[ $GPU_NVIDIA -eq 0 && $HAS_NVIDIA -eq 1 ]]; then
+  MSG="No NVIDIA GPU found. You can run 'mydistro-switch standard' for the lighter edition."
+else
+  exit 0
+fi
+echo "$MSG"
+echo "$MSG" > /run/mydistro-gpu-notice

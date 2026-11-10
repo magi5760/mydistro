@@ -1,27 +1,43 @@
 #!/bin/bash
-
+# Runs inside the image at build time. Everything here is baked into the OS.
 set -ouex pipefail
 
-# Copy the contents of system_files/ of the git repo to /
-cp -avf "/ctx/system_files"/. /
+# ---- Packages (system level) ------------------------------------------------
+# GUI apps go in as Flatpaks at first boot (see flatpaks.txt); only system
+# tools, themes and WinApps dependencies are layered here.
+dnf5 install -y \
+  kvantum \
+  papirus-icon-theme \
+  rsms-inter-fonts \
+  fish \
+  fastfetch \
+  freerdp \
+  dialog \
+  iproute \
+  libnotify \
+  nmap-ncat \
+  podman-compose
 
-### Install packages
+# ---- Identity -----------------------------------------------------------------
+# Keep ID=fedora so Fedora tooling keeps working; change what users see.
+sed -i \
+  -e 's/^NAME=.*/NAME="MyDistro"/' \
+  -e 's/^PRETTY_NAME=.*/PRETTY_NAME="MyDistro (based on Fedora Atomic)"/' \
+  -e 's/^VARIANT=.*/VARIANT="MyDistro"/' \
+  -e 's/^VARIANT_ID=.*/VARIANT_ID=mydistro/' \
+  /usr/lib/os-release
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
+# Record which variant this is, so the GPU check can point to the right twin
+mkdir -p /usr/share/mydistro
+HAS_NVIDIA=0
+rpm -qa | grep -qE '^(kmod-nvidia|nvidia-driver|akmod-nvidia)' && HAS_NVIDIA=1
+cat > /usr/share/mydistro/image.env <<ENV
+IMAGE_STANDARD=ghcr.io/${IMAGE_OWNER}/${IMAGE_NAME%-nvidia}:latest
+IMAGE_NVIDIA=ghcr.io/${IMAGE_OWNER}/${IMAGE_NAME%-nvidia}-nvidia:latest
+HAS_NVIDIA=${HAS_NVIDIA}
+ENV
 
-# this installs a package from fedora repos
-dnf5 install -y tmux
-
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
-
-#### Example for enabling a System Unit File
-
+# ---- Services -------------------------------------------------------------------
+systemctl enable mydistro-flatpaks.service
+systemctl enable mydistro-gpu-check.service
 systemctl enable podman.socket

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Windows Apps Setup
+Comment=Run Windows programs like Photoshop in seamless windows
+Exec=konsole --hold -e mydistro-winapps-setup
+Icon=preferences-desktop-remote-desktop
+Categories=System;Utility;
+Terminal=false

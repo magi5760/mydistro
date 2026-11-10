@@ -1,0 +1,7 @@
+[Plugins]
+blurEnabled=true
+wobblywindowsEnabled=false
+
+[Effect-blur]
+BlurStrength=8
+NoiseStrength=2

@@ -1,0 +1,17 @@
+#!/bin/bash
+# Switch between the standard and NVIDIA editions of MyDistro.
+#   mydistro-switch nvidia | standard | status
+set -euo pipefail
+source /usr/share/mydistro/image.env
+case "${1:-status}" in
+  nvidia)   TARGET=$IMAGE_NVIDIA ;;
+  standard) TARGET=$IMAGE_STANDARD ;;
+  status)   sudo bootc status; exit 0 ;;
+  *) echo "Usage: mydistro-switch nvidia|standard|status"; exit 1 ;;
+esac
+echo "Switching to $TARGET. Your files, settings and Flatpak apps stay as they are."
+sudo bootc switch "$TARGET"
+echo "Done. Reboot to start the new edition. (If anything's wrong, pick the previous entry in the boot menu.)"
+if lspci -nn | grep -qi '\[10de:' && mokutil --sb-state 2>/dev/null | grep -qi enabled; then
+  echo "Secure Boot is on: you may need to enroll the image's signing key. See the README."
+fi

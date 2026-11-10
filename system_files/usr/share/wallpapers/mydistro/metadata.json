@@ -1,0 +1,8 @@
+{
+  "KPlugin": {
+    "Id": "MyDistro",
+    "Name": "MyDistro",
+    "Authors": [{ "Name": "MyDistro Project" }],
+    "License": "CC-BY-SA-4.0"
+  }
+}

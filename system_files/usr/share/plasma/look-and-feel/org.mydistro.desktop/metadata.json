@@ -1,0 +1,12 @@
+{
+  "KPlugin": {
+    "Id": "org.mydistro.desktop",
+    "Name": "MyDistro",
+    "Description": "The MyDistro desktop look",
+    "Authors": [{ "Name": "MyDistro Project" }],
+    "License": "GPL-3.0-or-later",
+    "Version": "0.1"
+  },
+  "KPackageStructure": "Plasma/LookAndFeel",
+  "X-Plasma-APIVersion": "2"
+}

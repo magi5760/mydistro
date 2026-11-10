@@ -1,0 +1,13 @@
+[Unit]
+Description=MyDistro: install default apps from Flathub
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=!/var/lib/mydistro/flatpaks.done
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/mydistro-flatpaks
+TimeoutStartSec=60min
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,5 @@
+Put your wallpaper images here, named by resolution, e.g.:
+  3840x2160.png
+  2560x1440.png
+  1920x1080.png
+Scans of your own watercolor paintings work beautifully.

@@ -1,0 +1,14 @@
+[kdeglobals][General]
+ColorScheme=BreezeDark
+
+[kdeglobals][Icons]
+Theme=Papirus-Dark
+
+[kdeglobals][KDE]
+widgetStyle=kvantum-dark
+
+[plasmarc][Theme]
+name=breeze-dark
+
+[Wallpaper]
+Image=MyDistro

@@ -1,0 +1,3 @@
+#!/bin/bash
+[[ -f /run/mydistro-gpu-notice ]] && notify-send -i video-display "MyDistro" "$(cat /run/mydistro-gpu-notice)"
+exit 0

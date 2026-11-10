@@ -1,0 +1,10 @@
+# Installed from Flathub on first boot. One app ID per line.
+org.kde.krita
+org.gimp.GIMP
+org.inkscape.Inkscape
+org.darktable.Darktable
+org.kde.kdenlive
+org.mozilla.firefox
+org.libreoffice.LibreOffice
+org.videolan.VLC
+com.github.tchx84.Flatseal
