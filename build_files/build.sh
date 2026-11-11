@@ -41,3 +41,13 @@ ENV
 systemctl enable mydistro-flatpaks.service
 systemctl enable mydistro-gpu-check.service
 systemctl enable podman.socket
+
+# ---- ISO builder workaround (Fedora 45) ----------------------------------------
+# Fedora 45 moved repo files to /usr/share/dnf5/repos.d; bootc-image-builder
+# still only reads /etc/yum.repos.d. Link them back so the ISO build can find packages.
+mkdir -p /etc/yum.repos.d
+for f in /usr/share/dnf5/repos.d/*.repo; do
+  [ -e "$f" ] || continue
+  name=$(basename "$f")
+  [ -e "/etc/yum.repos.d/$name" ] || ln -s "../../usr/share/dnf5/repos.d/$name" "/etc/yum.repos.d/$name"
+done
